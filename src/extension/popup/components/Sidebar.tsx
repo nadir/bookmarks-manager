@@ -14,6 +14,7 @@ import { IconContext } from 'react-icons/lib';
 import { db } from '../../database/db';
 
 const StyledSidebar = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
