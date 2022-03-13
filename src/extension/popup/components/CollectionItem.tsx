@@ -16,7 +16,7 @@ const CollectionItemContainer = styled.div`
   align-items: center;
   padding: 10px 30px;
   :hover {
-    background-color: #181818;
+    background-color: #121010;
     cursor: pointer;
   }
 `;
@@ -30,7 +30,8 @@ const ItemIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 0.5px solid #4a4a4a;
+  background-color: #121010;
+  border: 0.5px solid #5a5a5a42;
   border-radius: 5px;
   margin-right: 20px;
   flex-shrink: 0;

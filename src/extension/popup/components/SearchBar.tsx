@@ -13,7 +13,7 @@ const SearchBarContainer = styled.div`
   height: 40px;
   color: #bababa;
   background: #121010;
-  box-shadow: 0px 0.5px 0px #3a3a3a;
+  box-shadow: 0px 0.4px 0px #5a5a5a;
   border-bottom-left-radius: 5px;
   font-size: 16px;
   input {
@@ -29,7 +29,7 @@ const SearchBarContainer = styled.div`
 const SearchBar = () => {
   return (
     <SearchBarContainer>
-      <IoSearch></IoSearch>
+      <IoSearch size={'20px'}></IoSearch>
       <input
         type="text"
         id="name"

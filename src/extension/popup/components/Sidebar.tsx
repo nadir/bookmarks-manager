@@ -4,7 +4,7 @@ import {
   IoSettingsSharp,
   IoAddCircle,
   IoFolderOpen,
-  IoStar,
+  IoTime,
   IoTrash,
   IoAppsSharp,
 } from 'react-icons/io5';
@@ -58,7 +58,7 @@ const Sidebar = () => {
         <IconContext.Provider value={{ size: '20px' }}>
           <Button icon={<IoAppsSharp />}></Button>
           <Button icon={<IoFolderOpen />}></Button>
-          <Button icon={<IoStar />}></Button>
+          <Button icon={<IoTime />}></Button>
           <Button icon={<IoTrash />}></Button>
         </IconContext.Provider>
       </ButtonsContainer>
