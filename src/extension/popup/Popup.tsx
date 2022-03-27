@@ -5,6 +5,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import Sidebar from './components/Sidebar';
 import CollectionItem from './components/CollectionItem';
 import SearchBar from './components/SearchBar';
+import Folders from './components/FoldersTreeView';
 import './popup.css';
 import { db } from '../database/db';
 
@@ -51,7 +52,9 @@ const CollectionsContainer = styled.div`
 
 const CollectionsSelector = styled.div`
   position: relative;
-  flex-basis: 180px;
+  flex-basis: 240px;
+  overflow-x: scroll;
+  overflow-y: hidden;
   box-shadow: 0.2px 0px 0px #5a5a5a;
   border-radius: 5px 0px 0px 5px;
 `;
@@ -59,7 +62,7 @@ const Collections = () => {
   return (
     <CollectionsContainer>
       <CollectionsSelector>
-        <p>Collections</p>
+        <Folders></Folders>
       </CollectionsSelector>
       <TestingMessages></TestingMessages>
     </CollectionsContainer>

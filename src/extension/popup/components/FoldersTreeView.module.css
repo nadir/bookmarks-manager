@@ -1,0 +1,23 @@
+.app {
+  height: 100%;
+}
+
+.app li {
+  list-style: none;
+}
+
+.treeRoot {
+  height: 100%;
+}
+
+.draggingSource {
+  opacity: 0.3;
+}
+
+.placeholderContainer {
+  position: relative;
+}
+
+.dropTarget {
+  background-color: #1b1b1b;
+}
