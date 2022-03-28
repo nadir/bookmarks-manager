@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { IoSearch } from 'react-icons/io5';
 
 const SearchBarContainer = styled.div`
+  position: relative;
   display: flex;
   gap: 10px;
   flex-direction: row;

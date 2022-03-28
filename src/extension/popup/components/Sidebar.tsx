@@ -15,6 +15,7 @@ import { db } from '../../database/db';
 
 const StyledSidebar = styled.div`
   position: relative;
+  z-index: 99;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

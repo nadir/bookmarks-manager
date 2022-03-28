@@ -51,7 +51,8 @@ const CollectionsContainer = styled.div`
 
 const CollectionsSelector = styled.div`
   position: relative;
-  flex-basis: 180px;
+  z-index: 10;
+  flex-basis: 250px;
   box-shadow: 0.2px 0px 0px #5a5a5a;
   border-radius: 5px 0px 0px 5px;
 `;

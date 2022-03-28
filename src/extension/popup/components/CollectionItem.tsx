@@ -10,7 +10,7 @@ interface CollectionItemProps {
 const CollectionItemContainer = styled.div`
   min-width: 0;
   width: 100%;
-  flex-basis: 100px;
+  flex-basis: 80px;
   display: flex;
   flex-direction: row;
   align-items: center;
