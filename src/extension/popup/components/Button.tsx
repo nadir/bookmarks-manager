@@ -9,10 +9,11 @@ const StyledButton = styled.a`
   width: 30px;
   height: 30px;
   margin: 10px;
+  cursor: pointer;
+
   border-radius: 5px;
   :hover {
     background-color: #3b3b3b;
-    cursor: pointer;
   }
   :active {
     background-color: #494949;
