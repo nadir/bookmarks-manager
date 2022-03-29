@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { MenuDivider, MenuItem, useMenuState } from '@szhsin/react-menu';
+import ContextMenu from './ContextMenu';
+import { db } from '../../database/db';
 
 interface CollectionItemProps {
+  id: number;
   title: string;
   url: string;
   faviconUrl: string;
 }
 
-const CollectionItemContainer = styled.div`
+const CollectionItemContainer = styled.div<{ selected: boolean }>`
+  background-color: ${(props) => (props.selected ? '#121010' : 'none')};
   min-width: 0;
   width: 100%;
   flex-basis: 80px;
@@ -60,12 +65,31 @@ const ItemDetails = styled.div`
 
 // TODO TRY TO MINIMIZE MIN WIDTH
 
-const CollectionItem = ({ title, url, faviconUrl }: CollectionItemProps) => {
+const CollectionItem = ({
+  id,
+  title,
+  url,
+  faviconUrl,
+}: CollectionItemProps) => {
+  const [menuProps, toggleMenu] = useMenuState({ unmountOnClose: true });
+  const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
+  const [selected, setSelected] = useState(false);
+
   const { hostname } = new URL(url);
   return (
     <CollectionItemContainer
-      onClick={() => {
+      selected={selected}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setAnchorPoint({ x: e.clientX, y: e.clientY });
+        toggleMenu(true);
+        setSelected(true);
+      }}
+      onDoubleClick={() => {
         chrome.tabs.create({ url: url });
+      }}
+      onClick={() => {
+        setSelected(!selected);
       }}
     >
       <ItemIcon>
@@ -75,6 +99,29 @@ const CollectionItem = ({ title, url, faviconUrl }: CollectionItemProps) => {
         <h1>{title}</h1>
         <p>{hostname}</p>
       </ItemDetails>
+      <ContextMenu
+        {...menuProps}
+        anchorPoint={anchorPoint}
+        onClose={() => toggleMenu(false)}
+      >
+        <MenuItem>Open in new tab</MenuItem>
+        <MenuItem
+          onClick={() => {
+            navigator.clipboard.writeText(url);
+          }}
+        >
+          Copy to clipboard
+        </MenuItem>
+        <MenuDivider />
+        <MenuItem>Edit</MenuItem>
+        <MenuItem
+          onClick={() => {
+            db.bookmarks.delete(id);
+          }}
+        >
+          Delete
+        </MenuItem>
+      </ContextMenu>
     </CollectionItemContainer>
   );
 };

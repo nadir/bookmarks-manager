@@ -1,7 +1,7 @@
 import Dexie, { Table } from 'dexie';
 
 export interface Link {
-  id?: number;
+  id: number;
   title: string;
   url: string;
   // todo support undefined
@@ -10,7 +10,7 @@ export interface Link {
 }
 
 export interface Collection {
-  id?: number;
+  id: number;
   name: string;
   icon: string;
 }

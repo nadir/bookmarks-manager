@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { MenuDivider, MenuItem, useMenuState } from '@szhsin/react-menu';
+import ContextMenu from './ContextMenu';
+import '@szhsin/react-menu/dist/index.css';
+
 import { MdFolder } from 'react-icons/md';
 
 const FolderIconContainer = styled.div`
@@ -45,12 +49,31 @@ interface FolderProps {
 }
 
 const Folder = ({ name, icon }: FolderProps) => {
+  const [menuProps, toggleMenu] = useMenuState({ unmountOnClose: true });
+  const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
+
   return (
-    <FolderContainer>
+    <FolderContainer
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setAnchorPoint({ x: e.clientX, y: e.clientY });
+        toggleMenu(true);
+      }}
+    >
       <FolderIcon icon={icon}></FolderIcon>
       <FolderName>
         <p>{name}</p>
       </FolderName>
+      <ContextMenu
+        {...menuProps}
+        anchorPoint={anchorPoint}
+        onClose={() => toggleMenu(false)}
+      >
+        <MenuItem>Rename</MenuItem>
+        <MenuItem>Change Icon</MenuItem>
+        <MenuDivider />
+        <MenuItem>Delete</MenuItem>
+      </ContextMenu>
     </FolderContainer>
   );
 };

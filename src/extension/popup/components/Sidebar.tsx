@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {
   IoSettingsSharp,
-  IoAddCircle,
+  IoMenu,
   IoFolderOpen,
   IoTime,
   IoTrash,
@@ -51,7 +51,7 @@ const Sidebar = () => {
               url: activeTab.url,
             });
           }}
-          icon={<IoAddCircle size={'20px'} />}
+          icon={<IoMenu size={'20px'} />}
         ></Button>
       </ButtonsContainer>
 

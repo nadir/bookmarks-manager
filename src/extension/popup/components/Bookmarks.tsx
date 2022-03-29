@@ -23,6 +23,7 @@ const Bookmarks = () => {
       {links?.map((link) => {
         return (
           <BookmarkItem
+            id={link.id}
             key={link.id}
             title={link.title}
             url={link.url}

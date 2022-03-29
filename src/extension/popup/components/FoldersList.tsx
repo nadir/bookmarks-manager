@@ -13,11 +13,11 @@ const FoldersListContainer = styled.div`
   padding: 60px 0 20px 0;
 `;
 
-const Folders = styled.div`
+const FoldersColumn = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 10px;
+  gap: 15px;
 `;
 
 const FoldersList = () => {
@@ -34,13 +34,13 @@ const FoldersList = () => {
         Folders
       </p>
 
-      <Folders>
+      <FoldersColumn>
         <Folder name="Inspiration" />
         <Folder name="Software" />
         <Folder name="Programming" />
         <Folder name="Design"></Folder>
         <Folder name="Articles"></Folder>
-      </Folders>
+      </FoldersColumn>
     </FoldersListContainer>
   );
 };
