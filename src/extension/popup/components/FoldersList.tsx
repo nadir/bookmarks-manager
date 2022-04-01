@@ -1,6 +1,10 @@
-import React from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
+import React, { useEffect } from 'react';
+import { atom, useRecoilState } from 'recoil';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Folder from './Folder';
+import { db } from '../../database/db';
 
 const FoldersListContainer = styled.div`
   position: relative;
@@ -20,28 +24,66 @@ const FoldersColumn = styled.div`
   gap: 15px;
 `;
 
-const FoldersList = () => {
-  return (
-    <FoldersListContainer>
-      <p
-        style={{
-          display: 'flex',
-          padding: '0 20px 10px 20px',
-          color: '#bababa',
-          fontSize: '13px',
-        }}
-      >
-        Folders
-      </p>
+export const activeFolderState = atom<number | null>({
+  key: 'activeFolder',
+  default: null,
+});
 
-      <FoldersColumn>
-        <Folder name="Inspiration" />
-        <Folder name="Software" />
-        <Folder name="Programming" />
-        <Folder name="Design"></Folder>
-        <Folder name="Articles"></Folder>
-      </FoldersColumn>
-    </FoldersListContainer>
+const FoldersList = () => {
+  // const navigate = useNavigate();
+  const { id } = useParams();
+
+  const folders = useLiveQuery(() => {
+    return db.folders.toArray();
+  });
+
+  // const [activeFolder, setActiveFolder] = useRecoilState(activeFolderState);
+
+  // // Set the first item in the database as the active folder
+  // useEffect(() => {
+  //   const getFirstFolder = async () => {
+  //     const folder = await db.folders.toCollection().first();
+  //     if (!folder) return;
+  //     navigate(`/folders/${folder.id}`);
+
+  //     //@ts-ignore
+  //     setActiveFolder(folder.id);
+  //   };
+  //   getFirstFolder();
+  // }, [setActiveFolder, navigate]);
+
+  return (
+    <>
+      <FoldersListContainer>
+        <p
+          style={{
+            display: 'flex',
+            padding: '0 20px 10px 20px',
+            color: '#bababa',
+            fontSize: '13px',
+          }}
+        >
+          Folders
+        </p>
+
+        <FoldersColumn>
+          {folders?.map((folder) => {
+            return (
+              <Folder
+                //@ts-ignore
+                id={folder.id}
+                key={folder.id}
+                //@ts-ignore
+                selected={parseInt(id) === folder.id}
+                name={folder.name}
+                icon={folder.icon}
+              ></Folder>
+            );
+          })}
+        </FoldersColumn>
+      </FoldersListContainer>
+      <Outlet />
+    </>
   );
 };
 

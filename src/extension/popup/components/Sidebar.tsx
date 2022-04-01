@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   IoSettingsSharp,
@@ -10,8 +10,12 @@ import {
 } from 'react-icons/io5';
 
 import Button from './Button';
+import NavButton from './NaviguationButton';
 import { IconContext } from 'react-icons/lib';
 import { db } from '../../database/db';
+import { useParams } from 'react-router-dom';
+import { activeFolder } from './Folder';
+import { useRecoilValue } from 'recoil';
 
 const StyledSidebar = styled.div`
   position: relative;
@@ -34,6 +38,8 @@ const ButtonsContainer = styled.div`
 `;
 
 const Sidebar = () => {
+  const activeFolderId = useRecoilValue(activeFolder);
+
   return (
     <StyledSidebar>
       <ButtonsContainer>
@@ -49,6 +55,7 @@ const Sidebar = () => {
               title: activeTab.title,
               // @ts-ignore DO NOT IGNORE JUST DEBUGGING
               url: activeTab.url,
+              folderId: activeFolderId,
             });
           }}
           icon={<IoMenu size={'20px'} />}
@@ -57,15 +64,15 @@ const Sidebar = () => {
 
       <ButtonsContainer>
         <IconContext.Provider value={{ size: '20px' }}>
-          <Button icon={<IoAppsSharp />}></Button>
-          <Button icon={<IoFolderOpen />}></Button>
-          <Button icon={<IoTime />}></Button>
-          <Button icon={<IoTrash />}></Button>
+          <NavButton icon={<IoAppsSharp />} to={'/overview'} />
+          <NavButton icon={<IoFolderOpen />} to={'/folders'} />
+          <NavButton icon={<IoTime />} to={'/readlater'} />
+          <NavButton icon={<IoTrash />} to={'/trash'} />
         </IconContext.Provider>
       </ButtonsContainer>
 
       <ButtonsContainer>
-        <Button icon={<IoSettingsSharp size={'20px'} />}></Button>
+        <NavButton icon={<IoSettingsSharp size={'20px'} />} to={'/settings'} />
       </ButtonsContainer>
     </StyledSidebar>
   );

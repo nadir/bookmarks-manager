@@ -23,6 +23,7 @@ const StyledButton = styled.a`
 interface ButtonProps {
   icon: JSX.Element;
   onClick?: () => void;
+  to?: string;
 }
 
 const Button = ({ icon, onClick }: ButtonProps) => {

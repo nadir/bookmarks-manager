@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { MenuDivider, MenuItem, useMenuState } from '@szhsin/react-menu';
 import ContextMenu from './ContextMenu';
 import '@szhsin/react-menu/dist/index.css';
 
 import { MdFolder } from 'react-icons/md';
+import { atom, useSetRecoilState } from 'recoil';
 
 const FolderIconContainer = styled.div`
   display: flex;
@@ -32,8 +34,9 @@ const FolderName = styled.div`
   }
 `;
 
-const FolderContainer = styled.a`
+const FolderContainer = styled.a<{ selected: boolean }>`
   user-select: none;
+  background-color: ${(props) => (props.selected ? '#121010' : 'none')};
   cursor: pointer;
   display: flex;
   gap: 10px;
@@ -44,16 +47,30 @@ const FolderContainer = styled.a`
 `;
 
 interface FolderProps {
+  id: number;
   name: string;
   icon?: string;
+  selected: boolean;
 }
 
-const Folder = ({ name, icon }: FolderProps) => {
+export const activeFolder = atom({
+  key: 'activeFolder',
+  default: 1,
+});
+
+const Folder = ({ id, name, icon, selected }: FolderProps) => {
+  const navigate = useNavigate();
   const [menuProps, toggleMenu] = useMenuState({ unmountOnClose: true });
   const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
+  const setActiveFolder = useSetRecoilState(activeFolder);
 
   return (
     <FolderContainer
+      onClick={() => {
+        navigate('/folders/' + id);
+        setActiveFolder(parseInt(id));
+      }}
+      selected={selected}
       onContextMenu={(e) => {
         e.preventDefault();
         setAnchorPoint({ x: e.clientX, y: e.clientY });

@@ -1,13 +1,17 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import React from 'react';
 import { db } from '../../database/db';
+import { useParams } from 'react-router-dom';
 import BookmarkItem from './BookmarkItem';
 import SearchBar from './SearchBar';
 
 const Bookmarks = () => {
+  const { id } = useParams();
+  console.log('Bookmarks: ' + id);
   const links = useLiveQuery(() => {
-    return db.bookmarks.toArray();
-  });
+    console.log('from livequery' + id);
+    return db.bookmarks.where('folderId').equals(parseInt(id)).toArray();
+  }, [id]);
 
   return (
     <div
@@ -23,6 +27,7 @@ const Bookmarks = () => {
       {links?.map((link) => {
         return (
           <BookmarkItem
+            //@ts-ignore
             id={link.id}
             key={link.id}
             title={link.title}
