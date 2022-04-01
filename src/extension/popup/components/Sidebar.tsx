@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {
   IoSettingsSharp,
@@ -13,7 +13,6 @@ import Button from './Button';
 import NavButton from './NaviguationButton';
 import { IconContext } from 'react-icons/lib';
 import { db } from '../../database/db';
-import { useParams } from 'react-router-dom';
 import { activeFolder } from './Folder';
 import { useRecoilValue } from 'recoil';
 
@@ -55,7 +54,7 @@ const Sidebar = () => {
               title: activeTab.title,
               // @ts-ignore DO NOT IGNORE JUST DEBUGGING
               url: activeTab.url,
-              folderId: activeFolderId,
+              folderId: activeFolderId || 1,
             });
           }}
           icon={<IoMenu size={'20px'} />}

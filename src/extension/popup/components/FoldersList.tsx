@@ -1,7 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import React, { useEffect } from 'react';
-import { atom, useRecoilState } from 'recoil';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { atom } from 'recoil';
+import { Outlet, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Folder from './Folder';
 import { db } from '../../database/db';
@@ -9,7 +9,8 @@ import { db } from '../../database/db';
 const FoldersListContainer = styled.div`
   position: relative;
   z-index: 10;
-  flex-basis: 280px;
+  flex-basis: 200px;
+  flex-shrink: 0;
   box-shadow: 0.2px 0px 0px #5a5a5a;
   border-radius: 5px 0px 0px 5px;
   display: flex;
@@ -30,27 +31,11 @@ export const activeFolderState = atom<number | null>({
 });
 
 const FoldersList = () => {
-  // const navigate = useNavigate();
   const { id } = useParams();
 
   const folders = useLiveQuery(() => {
     return db.folders.toArray();
   });
-
-  // const [activeFolder, setActiveFolder] = useRecoilState(activeFolderState);
-
-  // // Set the first item in the database as the active folder
-  // useEffect(() => {
-  //   const getFirstFolder = async () => {
-  //     const folder = await db.folders.toCollection().first();
-  //     if (!folder) return;
-  //     navigate(`/folders/${folder.id}`);
-
-  //     //@ts-ignore
-  //     setActiveFolder(folder.id);
-  //   };
-  //   getFirstFolder();
-  // }, [setActiveFolder, navigate]);
 
   return (
     <>

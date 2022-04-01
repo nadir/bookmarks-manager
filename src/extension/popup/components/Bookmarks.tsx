@@ -7,9 +7,7 @@ import SearchBar from './SearchBar';
 
 const Bookmarks = () => {
   const { id } = useParams();
-  console.log('Bookmarks: ' + id);
   const links = useLiveQuery(() => {
-    console.log('from livequery' + id);
     return db.bookmarks.where('folderId').equals(parseInt(id)).toArray();
   }, [id]);
 

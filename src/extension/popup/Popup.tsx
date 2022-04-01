@@ -1,5 +1,10 @@
 import React from 'react';
-import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+  MemoryRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from 'react-router-dom';
 import styled from 'styled-components';
 import Sidebar from './components/Sidebar';
 import Bookmarks from './components/Bookmarks';
@@ -21,6 +26,8 @@ const Popup = () => {
           <Sidebar />
           <MainUI>
             <Routes>
+              {/* Remove the "1" later */}
+              <Route path="/" element={<Navigate replace to="/folders/1" />} />
               <Route
                 path="/overview"
                 element={<h1>The overview view</h1>}
