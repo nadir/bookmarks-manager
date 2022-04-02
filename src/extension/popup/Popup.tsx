@@ -1,14 +1,10 @@
-import React from 'react';
-import {
-  MemoryRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import Sidebar from './components/Sidebar';
 import Bookmarks from './components/Bookmarks';
 import FoldersList from './components/FoldersList';
+import App from './components/App';
 import './popup.css';
 import { RecoilRoot } from 'recoil';
 
@@ -19,15 +15,24 @@ const MainUI = styled.div`
 `;
 
 const Popup = () => {
-  return (
-    <Router>
+  const [lastLocation, setLastLocation] = useState<string>();
+  useEffect(() => {
+    const getLastLocation = async () => {
+      const { lastVisitedLocation } = await chrome.storage.local.get([
+        'lastVisitedLocation',
+      ]);
+      setLastLocation(lastVisitedLocation);
+    };
+    getLastLocation();
+  }, []);
+
+  return lastLocation ? (
+    <Router initialEntries={[lastLocation]}>
       <RecoilRoot>
-        <div className="App">
+        <App>
           <Sidebar />
           <MainUI>
             <Routes>
-              {/* Remove the "1" later */}
-              <Route path="/" element={<Navigate replace to="/folders/1" />} />
               <Route
                 path="/overview"
                 element={<h1>The overview view</h1>}
@@ -47,9 +52,11 @@ const Popup = () => {
               ></Route>
             </Routes>
           </MainUI>
-        </div>
+        </App>
       </RecoilRoot>
     </Router>
+  ) : (
+    <p>Loading</p>
   );
 };
 
