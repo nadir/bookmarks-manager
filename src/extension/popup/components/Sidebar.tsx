@@ -15,6 +15,7 @@ import { IconContext } from 'react-icons/lib';
 import { db } from '../../database/db';
 import { activeFolder } from './Folder';
 import { useRecoilValue } from 'recoil';
+import { useParams } from 'react-router-dom';
 
 const StyledSidebar = styled.div`
   position: relative;
@@ -38,7 +39,7 @@ const ButtonsContainer = styled.div`
 
 const Sidebar = () => {
   const activeFolderId = useRecoilValue(activeFolder);
-
+  const { id } = useParams();
   return (
     <StyledSidebar>
       <ButtonsContainer>
@@ -54,7 +55,7 @@ const Sidebar = () => {
               title: activeTab.title,
               // @ts-ignore DO NOT IGNORE JUST DEBUGGING
               url: activeTab.url,
-              folderId: activeFolderId || 1,
+              folderId: activeFolderId || parseInt(id) || 1,
             });
           }}
           icon={<IoMenu size={'20px'} />}

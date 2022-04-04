@@ -7,6 +7,8 @@ import '@szhsin/react-menu/dist/index.css';
 
 import { MdFolder } from 'react-icons/md';
 import { atom, useSetRecoilState } from 'recoil';
+import { useDrop } from 'react-dnd';
+import { db } from '../../database/db';
 
 const FolderIconContainer = styled.div`
   display: flex;
@@ -34,9 +36,10 @@ const FolderName = styled.div`
   }
 `;
 
-const FolderContainer = styled.a<{ selected: boolean }>`
+const FolderContainer = styled.a<{ selected: boolean; hovered: boolean }>`
   user-select: none;
-  background-color: ${(props) => (props.selected ? '#121010' : 'none')};
+  background-color: ${(props) =>
+    props.hovered ? '#312c2c' : props.selected ? '#121010' : 'none'};
   cursor: pointer;
   display: flex;
   gap: 10px;
@@ -64,8 +67,22 @@ const Folder = ({ id, name, icon, selected }: FolderProps) => {
   const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
   const setActiveFolder = useSetRecoilState(activeFolder);
 
+  const [{ hovered }, dropRef] = useDrop({
+    accept: 'link',
+    drop: (item) => {
+      db.bookmarks.update(item.linkId, {
+        folderId: id,
+      });
+    },
+    collect: (monitor) => ({
+      hovered: monitor.isOver(),
+    }),
+  });
+
   return (
     <FolderContainer
+      hovered={hovered}
+      ref={dropRef}
       onClick={() => {
         navigate('/folders/' + id);
         setActiveFolder(parseInt(id));

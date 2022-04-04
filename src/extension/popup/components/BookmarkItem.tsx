@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { MenuDivider, MenuItem, useMenuState } from '@szhsin/react-menu';
 import ContextMenu from './ContextMenu';
 import { db } from '../../database/db';
+import { useDrag } from 'react-dnd';
 
 interface CollectionItemProps {
   id: number;
@@ -11,7 +12,11 @@ interface CollectionItemProps {
   faviconUrl: string;
 }
 
-const CollectionItemContainer = styled.div<{ selected: boolean }>`
+const CollectionItemContainer = styled.div<{
+  selected: boolean;
+  isDragging: boolean;
+}>`
+  opacity: ${(props) => (props.isDragging ? '0.1' : '1')};
   background-color: ${(props) => (props.selected ? '#121010' : 'none')};
   min-width: 0;
   width: 100%;
@@ -49,6 +54,7 @@ const ItemDetails = styled.div`
   gap: 5px;
   align-items: start;
   h1 {
+    text-align: left;
     font-size: 16px;
     font-weight: normal;
     width: 100%;
@@ -75,34 +81,45 @@ const CollectionItem = ({
   const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
   const [selected, setSelected] = useState(false);
 
+  const [{ isDragging }, dragRef] = useDrag({
+    type: 'link',
+    item: { linkId: id },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
   const { hostname } = new URL(url);
   return (
-    <CollectionItemContainer
-      selected={selected}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        setAnchorPoint({ x: e.clientX, y: e.clientY });
-        toggleMenu(true);
-        setSelected(true);
-      }}
-      onDoubleClick={() => {
-        chrome.tabs.create({ url: url });
-      }}
-      onClick={() => {
-        setSelected(!selected);
-      }}
-    >
-      <ItemIcon>
-        <img src={faviconUrl} alt="" />
-      </ItemIcon>
-      <ItemDetails>
-        <h1>{title}</h1>
-        <p>{hostname}</p>
-      </ItemDetails>
+    <>
+      <CollectionItemContainer
+        isDragging={isDragging}
+        ref={dragRef}
+        selected={selected}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setAnchorPoint({ x: e.clientX, y: e.clientY });
+          toggleMenu(true);
+          setSelected(true);
+        }}
+        onDoubleClick={() => {
+          chrome.tabs.create({ url: url });
+        }}
+      >
+        <ItemIcon>
+          <img src={faviconUrl} alt="" />
+        </ItemIcon>
+        <ItemDetails>
+          <h1>{title}</h1>
+          <p>{hostname}</p>
+        </ItemDetails>
+      </CollectionItemContainer>
       <ContextMenu
         {...menuProps}
         anchorPoint={anchorPoint}
-        onClose={() => toggleMenu(false)}
+        onClose={() => {
+          toggleMenu(false);
+          setSelected(!selected);
+        }}
       >
         <MenuItem>Open in new tab</MenuItem>
         <MenuItem
@@ -122,7 +139,7 @@ const CollectionItem = ({
           Delete
         </MenuItem>
       </ContextMenu>
-    </CollectionItemContainer>
+    </>
   );
 };
 
